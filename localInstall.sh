@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 
 # Pre Install these Python tools
 
