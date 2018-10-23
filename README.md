@@ -17,10 +17,16 @@ I use this Components inside the RadioRaspi
 * **Display** 2 ROW LCD https://tutorials-raspberrypi.de//hd44780-lcd-display-per-i2c-mit-dem-raspberry-pi-ansteuern/
 * **Illumination** Powered by blinkt https://shop.pimoroni.de/products/blinkt
 
-##mpcLcdParser Service
+## Base
+Prepare a fresh SD Card with the ![Volumio Distribution](https://volumio.org/get-started/)
+
+## Install
+The Install Script install missing packages in the **volumio** Image.
+
+## mpcLcdParser Service
 The **mpdLcdParserService** parses mpc Output to extract the actual playing **Title** and **Album**
 And Display this Information at the LCD Display.
 
-##background Service
+## background Service
 The **backgroundservice** controls the **Blinkt** Modul
 
