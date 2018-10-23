@@ -1,6 +1,6 @@
 # RadioRaspi
 
-[RadioRaspi](http://www.joern-karthaus.de/blog/img/radio/radio7.jpg)
+![RadioRaspi](http://www.joern-karthaus.de/blog/img/radio/radio7.jpg)
 
 In this Respository is some litle Code that I have build on Top of my **RadioRaspi** 
 Project.
