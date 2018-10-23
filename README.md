@@ -18,10 +18,10 @@ I use this Components inside the RadioRaspi
 * **Illumination** Powered by blinkt https://shop.pimoroni.de/products/blinkt
 
 ## Base
-Prepare a fresh SD Card with the ![Volumio Distribution](https://volumio.org/get-started/)
+Prepare a fresh SD Card with the [Volumio Distribution](https://volumio.org/get-started/)
 
 ## Install
-The Install Script install missing packages in the **volumio** Image.
+The Install Script installs missing packages on top of the **volumio** Image.
 
 ## mpcLcdParser Service
 The **mpdLcdParserService** parses mpc Output to extract the actual playing **Title** and **Album**
