@@ -8,7 +8,7 @@ if [ "$EUID" -ne 0 ]
 fi
 
 echo "install python tools"
-apt-get install python-smbus i2c-tools
+apt-get install python-smbus i2c-tools python-pip python-blinkt
 
 echo "numpy is required for illumination"
 pip install numpy
@@ -18,7 +18,7 @@ ln -s /home/volumio/lcd/lcdShutdown.service /etc/systemd/system/halt.target.want
 ln -s /home/volumio/lcd/lcdShutdown.service /etc/systemd/system/poweroff.target.wants/lcdShutdown.service
 
 echo "install mpcLCD service"
-cp mpcLcdService /etc/init.de
+cp /home/volumio/mpcLcdService /etc/init.de
 echo "Set mpcLcdService as default start Service"
 update-rc.d mpcLcdService defaults
 
