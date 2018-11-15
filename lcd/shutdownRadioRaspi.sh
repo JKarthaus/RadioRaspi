@@ -2,7 +2,7 @@
 
 # Shutting Down RadioRaspi
 
-/etc/init.d/mpcLcdService stop
+service mpcLcdService stop
 
 ./switchOffLCD.py
 
