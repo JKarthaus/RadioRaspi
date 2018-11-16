@@ -1,74 +1,76 @@
 - hosts: testRadioRaspi
   gather_facts: yes
   
-  vars:
-    my_name: a_b_c
-  
-  tasks:
-    - debug: msg={{ my_name|replace('_', '-') }}
 # -------------------------------------------------- install packages        
-    - name: Only run "update_cache=yes" if the last one is more than 3600 seconds ago
-      apt:
-        update_cache: yes
-        cache_valid_time: 3600
-      become: yes
+- name: Only run "update_cache=yes" if the last one is more than 3600 seconds ago
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    become: yes
       
-    - name: Install some needed packages
-      apt:
-        name: "{{ packages }}"
-      vars:
-        packages:
-          - python-smbus   
-          - i2c-tools
-          - python-pip
-#          - python-blinkt
+- name: Install some needed packages
+  apt:
+    name: "{{ packages }}"
+    vars:
+      packages:
+        - python-smbus   
+        - i2c-tools
+        - python-pip
+        - python-blinkt
       become: yes
     
-    - name: Run some pip install routines
-      pip:
-        name: numpy 
+- name: Run some pip install routines
+  pip:
+    name: numpy 
 # -------------------------------------------------- copy ressources        
-    - name: copy LCD ressources to radioRaspi
-      copy:
-        src: lcd
-        dest: /home/volumio
-        owner: volumio
-        group: volumio
-        mode: u=rw,g=r,o=r
+- name: copy LCD ressources to radioRaspi
+  copy:
+    src: lcd
+    dest: /home/volumio
+    owner: volumio
+    group: volumio
+    mode: u=rw,g=r,o=r
 
-    - name: copy Blinkt ressources to radioRaspi
-      copy:
-        src: blinkt
-        dest: /home/volumio
-        owner: volumio
-        group: volumio
-        mode: u=rw,g=r,o=r
+- name: copy Blinkt ressources to radioRaspi
+  copy:
+    src: blinkt
+    dest: /home/volumio
+    owner: volumio
+    group: volumio
+    mode: u=rw,g=r,o=r
 # -------------------------------------------------- create symmlinks        
-    - name: copy links for lcd shutdown Service at halt
-      file:
-        src: /home/volumio/lcd/lcdShutdown.service
-        dest: /etc/systemd/system/halt.target.wants/lcdShutdown.service
-        owner: root
-        group: root
-        state: link
-      become: yes      
-    - name: copy links for lcd shutdown Service at poweroff
-      file:
-        src: /home/volumio/lcd/lcdShutdown.service
-        dest: /etc/systemd/system/poweroff.target.wants/lcdShutdown.service
-        owner: root
-        group: root
-        state: link 
-      become: yes
+- name: copy links for lcd shutdown Service at halt
+  file:
+    src: /home/volumio/lcd/lcdShutdown.service
+    dest: /etc/systemd/system/halt.target.wants/lcdShutdown.service
+    owner: root
+    group: root
+    state: link
+  become: yes      
+- name: copy links for lcd shutdown Service at poweroff
+  file:
+    src: /home/volumio/lcd/lcdShutdown.service
+    dest: /etc/systemd/system/poweroff.target.wants/lcdShutdown.service
+    owner: root
+    group: root
+    state: link 
+  become: yes
+# -------------------------------------------------- copy lcd service        
+- name: copy LCD service config
+  copy:
+    src: mpcLcd.service
+    dest: /etc/systemd/system
+    owner: root
+    group: root
+  become: yes
 # -------------------------------------------------- create symmlinks        
-    - name: copy LCD ressources to radioRaspi
-      copy:
-        src: mpcLcd.service
-        dest: /etc/systemd/system
-        owner: root
-        group: root
-      become: yes
-      
+- name: copy LCD ressources to radioRaspi
+  service:
+    name: mpcLcd
+    enabled: yes
+    state: restarted
+        
+
            
         
         
