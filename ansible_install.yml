@@ -1,4 +1,4 @@
-- hosts: testRadioRaspi
+- hosts: RadioRaspi
   gather_facts: yes
 
   tasks:
