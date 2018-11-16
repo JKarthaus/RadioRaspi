@@ -1,0 +1,11 @@
+
+[Unit]
+Description=send Switchoff Message to LCD
+DefaultDependencies=no
+Before=shutdown.target reboot.target halt.target
+
+
+[Service]
+ExecStart=/home/volumio/lcd/switchOffLCD.py
+Type=oneshot
+
