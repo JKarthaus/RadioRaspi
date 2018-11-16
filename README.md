@@ -21,7 +21,12 @@ I use this Components inside the RadioRaspi
 Prepare a fresh SD Card with the [Volumio Distribution](https://volumio.org/get-started/)
 
 ## Install
-The Install Script installs missing packages on top of the **volumio** Image.
+The Shell Script **startInstall.sh** install all Stuff automaticly.
+
+Requirements
+- Linux Host with **Ansible** installed.
+- SSH Connection to **volumio** under the name **radioRaspi**
+- Passwordless Login with user Volumio to radioRaspi
 
 ## mpcLcdParser Service
 The **mpdLcdParserService** parses mpc Output to extract the actual playing **Title** and **Album**
