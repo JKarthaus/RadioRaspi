@@ -64,10 +64,24 @@
       owner: root
       group: root
     become: yes
-# -------------------------------------------------- create symmlinks        
-  - name: copy LCD ressources to radioRaspi
+# -------------------------------------------------- start lcd Service        
+  - name: restart lcd Service
     service:
       name: mpcLcd
+      enabled: yes
+      state: restarted
+# -------------------------------------------------- copy illumination service        
+  - name: copy illumination service config
+    copy:
+      src: illumination.service
+      dest: /etc/systemd/system
+      owner: root
+      group: root
+    become: yes
+# -------------------------------------------------- restart illumination Service        
+  - name: restart Illumination Service
+    service:
+      name: illumination
       enabled: yes
       state: restarted
         
