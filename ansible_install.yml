@@ -22,7 +22,9 @@
     
   - name: Run some pip install routines
     pip:
-      name: numpy 
+      name: 
+      - numpy
+      - phue
 # -------------------------------------------------- copy ressources        
   - name: copy LCD ressources to radioRaspi
     copy:
