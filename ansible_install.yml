@@ -22,9 +22,10 @@
     
   - name: Run some pip install routines
     pip:
-      name: 
+      name: "{{ item }}"
+    with_items:
       - numpy
-      - phue
+      - phue 
 # -------------------------------------------------- copy ressources        
   - name: copy LCD ressources to radioRaspi
     copy:

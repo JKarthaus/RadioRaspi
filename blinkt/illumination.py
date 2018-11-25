@@ -3,6 +3,16 @@
 import colorsys
 import time
 from sys import exit
+import signal
+
+class GracefulKiller:
+  kill_now = False
+  def __init__(self):
+    signal.signal(signal.SIGINT, self.exit_gracefully)
+    signal.signal(signal.SIGTERM, self.exit_gracefully)
+
+  def exit_gracefully(self,signum, frame):
+    self.kill_now = True
 
 try:
     import numpy as np
@@ -16,7 +26,16 @@ blinkt.clear()
 start = 0
 end = 60
 
+killer = GracefulKiller()
+
+
 while True:
+    
+    if killer.kill_now:
+        blinkt.clear
+        break
+
+    
     wait = np.random.choice(np.random.noncentral_chisquare(5, 1, 1000), 1)[0] / 50
     n = np.random.choice(np.random.noncentral_chisquare(5, 0.1, 1000), 1)
     limit = int(n[0])
