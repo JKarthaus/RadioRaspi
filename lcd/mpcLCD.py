@@ -50,7 +50,7 @@ def writeToLCD(row1,row2):
     lcd.lcd_display_string(row1, 1)
     lcd.lcd_display_string(row2, 2)
 
- 
+        
 if __name__ == "__main__": 
     
     lcd = lcddriver.lcd()
