@@ -33,7 +33,7 @@
       dest: /home/volumio
       owner: volumio
       group: volumio
-      mode: u=rw,g=r,o=r
+      mode: u=rwx,g=r,o=r
 
   - name: copy Blinkt ressources to radioRaspi
     copy:
@@ -41,7 +41,7 @@
       dest: /home/volumio
       owner: volumio
       group: volumio
-      mode: u=rw,g=r,o=r
+      mode: u=rwx,g=r,o=r
 # -------------------------------------------------- create symmlinks        
   - name: copy links for lcd shutdown Service at halt
     file:

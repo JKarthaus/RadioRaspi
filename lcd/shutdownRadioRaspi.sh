@@ -2,8 +2,10 @@
 
 # Shutting Down RadioRaspi
 
-service mpcLcdService stop
+service mpcLcd stop
 service illumination stop
 
-./switchOffLCD.py
+./switchOffLCD.py &
+../blinkt/blinktShutdown.py &
+
 
