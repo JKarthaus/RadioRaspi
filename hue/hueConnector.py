@@ -12,7 +12,20 @@ import subprocess
 import json
 import glob
 import os
+import time
+import signal
 from phue import Bridge
+
+
+class GracefulKiller:
+  kill_now = False
+  def __init__(self):
+    signal.signal(signal.SIGINT, self.exit_gracefully)
+    signal.signal(signal.SIGTERM, self.exit_gracefully)
+
+  def exit_gracefully(self,signum, frame):
+    self.kill_now = True
+
 
 
 # create logger
@@ -71,14 +84,18 @@ def checkSceneExists(sceneName):
 def switchGroupOff(group):
     if checkGroupExists(group):
         bridge.set_group(group, 'on', False)
+
+def switchGroupOn(group):
+    if checkGroupExists(group):
+        bridge.set_group(group, 'on', True)
         
 
 def selectHueScene(newScene,group):
     logger.info("Try to switch on Scene : "+ newScene + " on Group: " + group)    
 
-    if checkGroupExists(group) and checkSceneExists(newScene):
-        bridge.run_scene(group,newScene)
-        logger.info("Starting Scene :" + newScene + " to Group: " + group)
+    #if checkGroupExists(group) and checkSceneExists(newScene):
+    bridge.run_scene(group,newScene)
+    logger.info("Starting Scene :" + newScene + " to Group: " + group)
 
 
 
@@ -86,9 +103,28 @@ def selectHueScene(newScene,group):
 if __name__ == '__main__':
 
     logging.basicConfig(level=logging.DEBUG)
-    actualSong = parseActualSong()
-    #if actualSong != "NONE":
-    #    print parseHuePlaylistsForScene(actualSong)
-    #selectHueScene("Rock","Wohnzimmer")
-    switchGroupOff("Wohnzimmer")
+
+    killer = GracefulKiller()
+    logger.info("hueConnector up and running")
+
+    switchGroupOn("radioRaspi")
+
+    while True :
+     
+        if killer.kill_now:
+            logger.info("Service Shutdown requestet -> switch off hue group")
+            switchGroupOff("radioRaspi")
+            break   
+        
+        actualSong = parseActualSong()
+        
+        if actualSong == "NONE":
+            selectHueScene("hue_pause","radioRaspi")
+        else:
+            parsedScene = parseHuePlaylistsForScene(actualSong) 
+            if parsedScene != "NONE":
+                selectHueScene(parsedScene,"radioRaspi")
+            
+        time.sleep(3)
+    
     pass

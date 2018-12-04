@@ -6,6 +6,5 @@ service mpcLcd stop
 service illumination stop
 
 ./switchOffLCD.py &
-../blinkt/blinktShutdown.py &
 
 

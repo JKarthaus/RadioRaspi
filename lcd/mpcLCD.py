@@ -17,6 +17,7 @@ class GracefulKiller:
 
 
 
+
 def parse_mpc():
     #raw = os.popen('simmpc.sh').read()
     raw = os.popen('mpc').read()

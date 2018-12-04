@@ -42,6 +42,14 @@
       owner: volumio
       group: volumio
       mode: u=rwx,g=r,o=r
+
+  - name: copy Hue ressources to radioRaspi
+    copy:
+      src: hue
+      dest: /home/volumio
+      owner: volumio
+      group: volumio
+      mode: u=rwx,g=r,o=r
 # -------------------------------------------------- create symmlinks        
   - name: copy links for lcd shutdown Service at halt
     file:
@@ -51,12 +59,22 @@
       group: root
       state: link
     become: yes      
+
   - name: copy links for lcd shutdown Service at poweroff
     file:
       src: /home/volumio/lcd/lcdShutdown.service
       dest: /etc/systemd/system/poweroff.target.wants/lcdShutdown.service
       owner: root
       group: root
+      state: link 
+    become: yes
+
+  - name: copy links for lcd shutdown Service at poweroff
+    file:
+      src: /data/playlist
+      dest: /home/volumio/hue/playlist
+      owner: volumio
+      group: volumio
       state: link 
     become: yes
 # -------------------------------------------------- copy lcd service        
@@ -85,6 +103,20 @@
   - name: restart Illumination Service
     service:
       name: illumination
+      enabled: yes
+      state: restarted
+# -------------------------------------------------- copy hue service        
+  - name: copy hue service config
+    copy:
+      src: hue.service
+      dest: /etc/systemd/system
+      owner: root
+      group: root
+    become: yes
+# -------------------------------------------------- restart hue Service        
+  - name: restart hue Service
+    service:
+      name: hue
       enabled: yes
       state: restarted
         
