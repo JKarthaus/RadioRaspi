@@ -15,6 +15,7 @@ import os
 import time
 import signal
 from phue import Bridge
+from time import sleep
 
 
 class GracefulKiller:
@@ -51,7 +52,7 @@ def parseActualSong ():
 
 def parseHuePlaylistsForScene(songURI):
     logger.info("Parsing playlists beginning with hue* and Song " + songURI)
-    for filename in glob.glob("playlist/hue_*"):
+    for filename in glob.glob("/home/volumio/hue/playlist/hue_*"):
         with open(filename) as playlist_file:
             logger.info("Checking Filename:" + filename)
             parsed_json = json.load(playlist_file)
@@ -59,7 +60,7 @@ def parseHuePlaylistsForScene(songURI):
                 if items["title"] == songURI :
                     scene = os.path.basename(filename)
                     scene = os.path.splitext(scene)[0]
-                    scene = scene[4:]
+                    scene = "rr_" + scene[4:]
                     return scene
     return "NONE"            
 
@@ -102,13 +103,15 @@ def selectHueScene(newScene,group):
                 
 if __name__ == '__main__':
 
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
 
     killer = GracefulKiller()
     logger.info("hueConnector up and running")
 
     switchGroupOn("radioRaspi")
 
+    time.sleep(10)
+    
     while True :
      
         if killer.kill_now:
@@ -119,11 +122,14 @@ if __name__ == '__main__':
         actualSong = parseActualSong()
         
         if actualSong == "NONE":
-            selectHueScene("hue_pause","radioRaspi")
+            selectHueScene("rr_pause","radioRaspi")
         else:
             parsedScene = parseHuePlaylistsForScene(actualSong) 
-            if parsedScene != "NONE":
-                selectHueScene(parsedScene,"radioRaspi")
+
+            if parsedScene == "NONE":
+                selectHueScene("rr_play","radioRaspi")
+            else: 
+               selectHueScene(parsedScene,"radioRaspi")
             
         time.sleep(3)
     

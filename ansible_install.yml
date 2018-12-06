@@ -69,7 +69,7 @@
       state: link 
     become: yes
 
-  - name: copy links for lcd shutdown Service at poweroff
+  - name: copy links for playlists to hue service
     file:
       src: /data/playlist
       dest: /home/volumio/hue/playlist
@@ -85,7 +85,7 @@
       owner: root
       group: root
     become: yes
-# -------------------------------------------------- start lcd Service        
+# -------------------------------------------------- restart lcd Service        
   - name: restart lcd Service
     service:
       name: mpcLcd
