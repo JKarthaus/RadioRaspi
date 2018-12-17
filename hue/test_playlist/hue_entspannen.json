@@ -1,0 +1,26 @@
+[
+	{
+		"service": "mpd",
+		"uri": "mnt/USB/Bruce Springsteen - Greatest Hits/01 - Bruce Springsteen - Born To Run.flac",
+		"title": "Born To Run",
+		"artist": "Bruce Springsteen",
+		"album": "Greatest Hits",
+		"albumart": "/albumart?cacheid=966&web=/Greatest%20Hits/extralarge&path=%2Fmnt%2FUSB%2FBruce%20Springsteen%20-%20Greatest%20Hits&icon=fa-tags&metadata=false"
+	},
+	{
+		"service": "mpd",
+		"uri": "mnt/USB/Bruce Springsteen - Greatest Hits/14 - Bruce Springsteen - Streets Of Philadelphia.flac",
+		"title": "Streets Of Philadelphia",
+		"artist": "Bruce Springsteen",
+		"album": "Greatest Hits",
+		"albumart": "/albumart?cacheid=966&web=/Greatest%20Hits/extralarge&path=%2Fmnt%2FUSB%2FBruce%20Springsteen%20-%20Greatest%20Hits&icon=fa-tags&metadata=false"
+	},
+	{
+		"service": "mpd",
+		"uri": "mnt/USB/Pink_Floyd-The_Endless_River/01-03-Pink_Floyd-Side_1_Pt_3_Ebb_And_Flow-SMR.flac",
+		"title": "Side 1, Pt. 3: Ebb And Flow",
+		"artist": "Pink Floyd",
+		"album": "The Endless River",
+		"albumart": "/albumart?cacheid=966&web=Pink%20Floyd/The%20Endless%20River/extralarge&path=%2Fmnt%2FUSB%2FPink_Floyd-The_Endless_River&icon=fa-tags&metadata=false"
+	}
+]

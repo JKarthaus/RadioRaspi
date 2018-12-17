@@ -22,7 +22,10 @@
     
   - name: Run some pip install routines
     pip:
-      name: numpy 
+      name: "{{ item }}"
+    with_items:
+      - numpy
+      - phue 
 # -------------------------------------------------- copy ressources        
   - name: copy LCD ressources to radioRaspi
     copy:
@@ -30,7 +33,7 @@
       dest: /home/volumio
       owner: volumio
       group: volumio
-      mode: u=rw,g=r,o=r
+      mode: u=rwx,g=r,o=r
 
   - name: copy Blinkt ressources to radioRaspi
     copy:
@@ -38,7 +41,15 @@
       dest: /home/volumio
       owner: volumio
       group: volumio
-      mode: u=rw,g=r,o=r
+      mode: u=rwx,g=r,o=r
+
+  - name: copy Hue ressources to radioRaspi
+    copy:
+      src: hue
+      dest: /home/volumio
+      owner: volumio
+      group: volumio
+      mode: u=rwx,g=r,o=r
 # -------------------------------------------------- create symmlinks        
   - name: copy links for lcd shutdown Service at halt
     file:
@@ -48,12 +59,22 @@
       group: root
       state: link
     become: yes      
+
   - name: copy links for lcd shutdown Service at poweroff
     file:
       src: /home/volumio/lcd/lcdShutdown.service
       dest: /etc/systemd/system/poweroff.target.wants/lcdShutdown.service
       owner: root
       group: root
+      state: link 
+    become: yes
+
+  - name: copy links for playlists to hue service
+    file:
+      src: /data/playlist
+      dest: /home/volumio/hue/playlist
+      owner: volumio
+      group: volumio
       state: link 
     become: yes
 # -------------------------------------------------- copy lcd service        
@@ -64,10 +85,38 @@
       owner: root
       group: root
     become: yes
-# -------------------------------------------------- create symmlinks        
-  - name: copy LCD ressources to radioRaspi
+# -------------------------------------------------- restart lcd Service        
+  - name: restart lcd Service
     service:
       name: mpcLcd
+      enabled: yes
+      state: restarted
+# -------------------------------------------------- copy illumination service        
+  - name: copy illumination service config
+    copy:
+      src: illumination.service
+      dest: /etc/systemd/system
+      owner: root
+      group: root
+    become: yes
+# -------------------------------------------------- restart illumination Service        
+  - name: restart Illumination Service
+    service:
+      name: illumination
+      enabled: yes
+      state: restarted
+# -------------------------------------------------- copy hue service        
+  - name: copy hue service config
+    copy:
+      src: hue.service
+      dest: /etc/systemd/system
+      owner: root
+      group: root
+    become: yes
+# -------------------------------------------------- restart hue Service        
+  - name: restart hue Service
+    service:
+      name: hue
       enabled: yes
       state: restarted
         

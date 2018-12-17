@@ -1,0 +1,14 @@
+[Unit]
+Description=hue lightning Service
+#After=multi-user.target
+After=volumio
+TimeoutStartSec=3
+ 
+[Service]
+User=volumio
+Group=volumio
+Type=simple
+ExecStart=/usr/bin/python /home/volumio/hue/hueConnector.py
+ 
+[Install]
+WantedBy=multi-user.target

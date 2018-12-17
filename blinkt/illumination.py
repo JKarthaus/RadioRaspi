@@ -1,35 +1,55 @@
 #!/usr/bin/env python
 
 import colorsys
+import math
 import time
-from sys import exit
 
-try:
-    import numpy as np
-except ImportError:
-    exit('This script requires the numpy module\nInstall with: sudo pip install numpy')
+from sys import exit
+import signal
+
+class GracefulKiller:
+  kill_now = False
+  def __init__(self):
+    signal.signal(signal.SIGINT, self.exit_gracefully)
+    signal.signal(signal.SIGTERM, self.exit_gracefully)
+
+  def exit_gracefully(self,signum, frame):
+    self.kill_now = True
 
 import blinkt
 
+blinkt.set_clear_on_exit()
 
-blinkt.clear()
-start = 0
-end = 60
+hue_range = 120
+hue_start = 0
+max_brightness = 0.2
+killer = GracefulKiller()
+
+def show_graph(v, r, g, b):
+    v *= blinkt.NUM_PIXELS
+    for x in range(blinkt.NUM_PIXELS):
+        hue = ((hue_start + ((x / float(blinkt.NUM_PIXELS)) * hue_range)) % 360) / 360.0
+        r, g, b = [int(c * 255) for c in colorsys.hsv_to_rgb(hue, 1.0, 1.0)]
+        if v < 0:
+            brightness = 0
+        else:
+            brightness = min(v, 1.0) * max_brightness
+
+        blinkt.set_pixel(x, r, g, b, brightness)
+        v -= 1
+
+    blinkt.show()
+
+
+blinkt.set_brightness(0.1)
 
 while True:
-    wait = np.random.choice(np.random.noncentral_chisquare(5, 1, 1000), 1)[0] / 50
-    n = np.random.choice(np.random.noncentral_chisquare(5, 0.1, 1000), 1)
-    limit = int(n[0])
+    
+    if killer.kill_now:
+        blinkt.clear
+        break
 
-    if limit > blinkt.NUM_PIXELS:
-        limit = blinkt.NUM_PIXELS
-
-    for pixel in range(limit):
-        hue = start + (((end - start) / float(blinkt.NUM_PIXELS)) * pixel)
-        r, g, b = [int(c * 255) for c in colorsys.hsv_to_rgb(hue / 360.0, 1.0, 1.0)]
-        blinkt.set_pixel(pixel, r, g, b)
-        blinkt.show()
-        time.sleep(0.05 / (pixel + 1))
-
-    time.sleep(wait)
-    blinkt.clear()
+    t = time.time() * 2
+    v = (math.sin(t) + 1) / 2  # Get a value between 0 and 1
+    show_graph(v, 255, 0, 255)
+    time.sleep(0.01)
